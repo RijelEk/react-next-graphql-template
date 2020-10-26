@@ -10,16 +10,12 @@ interface NavBarProps {}
 
 export const NavBar: React.FC<NavBarProps> = ({}) => {
   const router = useRouter();
-  const [logout, { loading: logoutFetching }] = useLogoutMutation();
-//   const apolloClient = useApolloClient();
-  const { data, loading } = useMeQuery({
-    skip: isServer(),
-  });
+  const [{ data,fetching }] = useMeQuery();
 
   let body = null;
 
   // data is loading
-  if (loading) {
+  if (fetching) {
     // user not logged in
   } else if (!data?.me) {
     body = (
@@ -43,11 +39,6 @@ export const NavBar: React.FC<NavBarProps> = ({}) => {
         </NextLink>
         <Box mr={2}>{data.me.username}</Box>
         <Button
-          onClick={async () => {
-            await logout();
-           
-          }}
-          isLoading={logoutFetching}
           variant="link"
         >
           logout
